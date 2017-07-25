@@ -9,18 +9,18 @@ $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed
 
 $output="";
 //Run Vagrant and Ansible Commands here
-//exec("sudo mkdir -p /home/test");
-/*
-$output = shell_exec("sudo ls /home/honeypots/");
-$oparray = preg_split("#[\r\n]+#", $output);
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+$honeypot = strtolower($_POST[playbook]);
 
-for ($i=0;$i<sizeof($oparray)-1;$i++){
-    echo "$oparray[$i] <br>";
+exec("sudo cp -a /home/honeypots/$honeypot /home/$honeypot");
+exec("sudo vagrant up --provision",$msg,$error);
+
+if ($error==1){
+    header('Location: schedule.php?task=2');
 }
-*/
-    if ($_SERVER["REQUEST_METHOD"] == "POST"){
-        
-        $sql = "INSERT INTO completed_tasks (nameoftask, user, taskexecutedtime,playbook_selected,comments,honeylive) VALUES ('$_POST[jobname]','$_SESSION[username]', NOW(),'$_POST[playbook]','$_POST[comments]','YES')";
+else {
+        //Else task if Running is Successful
+        $sql = "INSERT INTO completed_tasks (nameoftask, user, taskexecutedtime,playbook_selected,comments,honeylive) VALUES ('$_POST[jobname]','$_SESSION[username]', NOW(),'$honeypot','$_POST[comments]','YES')";
     
         if (mysqli_query($db, $sql)) {
             header('Location: schedule.php?task=1');
@@ -29,6 +29,6 @@ for ($i=0;$i<sizeof($oparray)-1;$i++){
         }
         mysqli_close($db);
 
-
     }
+}
 ?>
