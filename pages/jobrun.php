@@ -9,26 +9,18 @@ $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed
 
 $output="";
 //Run Vagrant and Ansible Commands here
-/*$output = shell_exec('ls -la');
+//exec("sudo mkdir -p /home/test");
+/*
+$output = shell_exec("sudo ls /home/honeypots/");
+$oparray = preg_split("#[\r\n]+#", $output);
 
-echo "<pre>$output</pre>";
+for ($i=0;$i<sizeof($oparray)-1;$i++){
+    echo "$oparray[$i] <br>";
+}
 */
-
-
-//if(!empty($output)){ Remove for now till integrate with backend
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         
-        if ($_POST["servergroup"]=="-"){
-            $server=$_POST["serverindividual"];
-        }
-        else if ($_POST["serverindividual"]=="-"){
-            $server=$_POST["servergroup"];
-        }
-        else {
-            $server=$_POST["servergroup"];
-        }
-        
-        $sql = "INSERT INTO completed_tasks (nameoftask, user, taskexecutedtime,server_selected,playbook_selected,comments) VALUES ('$_POST[jobname]','$_SESSION[username]', NOW(),'$server','$_POST[playbook]','$_POST[comments]')";
+        $sql = "INSERT INTO completed_tasks (nameoftask, user, taskexecutedtime,playbook_selected,comments,honeylive) VALUES ('$_POST[jobname]','$_SESSION[username]', NOW(),'$_POST[playbook]','$_POST[comments]','YES')";
     
         if (mysqli_query($db, $sql)) {
             header('Location: schedule.php?task=1');
@@ -39,5 +31,4 @@ echo "<pre>$output</pre>";
 
 
     }
-//}
 ?>

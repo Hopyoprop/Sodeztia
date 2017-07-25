@@ -300,7 +300,7 @@ if (empty($_SESSION["username"])){
                                             <label>Enter Job Name</label>
                                             <input class="form-control" placeholder="Enter text" value="" name="jobname">
                                         </div>
-                                       <div class="form-group">
+                                       <!--<div class="form-group"> Only when server deployment is online next time
                                             <label>Select Individual Server</label>
                                             <select class="form-control" name="serverindividual">
                                                 <option>-</option>
@@ -321,20 +321,24 @@ if (empty($_SESSION["username"])){
                                                 <option>4</option>
                                                 <option>5</option>
                                             </select>
-                                    </div>
+                                    </div>-->
+                                    <div class="form-group">
+                                            <label>Select Honeypot</label>
+                                            <select class="form-control" name="playbook">
+                                                <?php
+                                    $output = shell_exec("sudo ls /home/honeypots/");
+                                    $honeypots = preg_split("#[\r\n]+#", $output);
+                                    for ($i=0;$i<sizeof($honeypots)-1;$i++){
+                                            ?>
+                                    <option><?php echo strtoupper($honeypots[$i])?></option>
+                                     <?php
+                                        }
+                                     ?>
+                                            </select>
+                                    </div> 
                                 </div>
                                     
                                    <div class="col-lg-6">
-                                   <div class="form-group">
-                                            <label>Select Ansible Playbook</label>
-                                            <select class="form-control" name="playbook">
-                                                <option>(List dynamically)</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                    </div> 
                                        <div class="form-group">
                                             <label>Enter Comments (Optional)</label>
                                            <textarea class="form-control" placeholder="Enter comments" value="" rows="5" name="comments"></textarea>

@@ -50,7 +50,10 @@ if (empty($_SESSION["username"])){
     
     $sql = "SELECT COUNT(*) as 'Tasks' from completed_tasks";
     $result = mysqli_query($db,$sql);
-    $row = mysqli_fetch_assoc($result)
+    $row = mysqli_fetch_assoc($result);
+    $output = shell_exec("sudo ls /home/honeypots/");
+    $honeypots = preg_split("#[\r\n]+#", $output);
+    $noofhoney = sizeof($honeypots)-1;
 ?>   
 <body>
     <div id="wrapper">
@@ -315,7 +318,7 @@ if (empty($_SESSION["username"])){
                                     <i class="fa fa-connectdevelop fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">2</div>
+                                    <div class="huge">Box</div>
                                     <div>Systems Up</div>
                                 </div>
                             </div>
@@ -337,8 +340,8 @@ if (empty($_SESSION["username"])){
                                     <i class="fa fa-file-text-o fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">Enter PHP Data here</div>
-                                    <div>Playbooks Available</div>
+                                    <div class="huge"><?php echo $noofhoney ?></div>
+                                    <div>Honeypots Available for Deployment</div>
                                 </div>
                             </div>
                         </div>

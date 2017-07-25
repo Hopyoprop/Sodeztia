@@ -303,7 +303,6 @@ if (empty($_SESSION["username"])){
                                         <th>Task Name</th>
                                         <th>User</th>
                                         <th>Task Execution Datetime</th>
-                                        <th>Server Selected</th>
                                         <th>Playbook Deployed</th>
                                         <th>Comments</th>
                                     </tr>
@@ -317,7 +316,6 @@ if (empty($_SESSION["username"])){
                                         <td><?php echo $row['nameoftask']; ?></td>
                                         <td><?php echo $row['user']; ?></td>
                                         <td><?php echo $row['taskexecutedtime']; ?></td>
-                                        <td class="center"><?php echo $row['server_selected']; ?></td>
                                         <td class="center"><?php echo $row['playbook_selected']; ?></td>
                                         <td><?php echo $row['comments']; ?></td>
                                     </tr>
