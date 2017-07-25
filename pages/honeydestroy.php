@@ -12,7 +12,7 @@ $output="";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 $honeypot = strtolower($_POST[playbook]);
 chdir("/home/$honeypot/");
-exec("sudo vagrant destroy 2>&1",$msg,$error);
+//exec("vagrant destroy 2>&1",$msg,$error);
 
 if ($error==1){
     $file = fopen('../logs/errors.log','a+');

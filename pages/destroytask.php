@@ -282,7 +282,7 @@ if (empty($_SESSION["username"])){
           <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Deploy Tasks</h1>
+                    <h1 class="page-header">Shutdown Honeypots</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -301,9 +301,6 @@ if (empty($_SESSION["username"])){
                 </div>
                 <?php endif ?>
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Destroy Honeypot
-                        </div>
                         <div class="panel-body">
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
@@ -329,7 +326,8 @@ if (empty($_SESSION["username"])){
                                         <td><?php echo $row['taskexecutedtime']; ?></td>
                                         <td class="center"><?php echo $row['playbook_selected']; ?></td><input type="hidden" value="<?php echo $row['playbook_selected']; ?>" name="playbook">
                                         <td><?php echo $row['comments']; ?></td>
-                                        <td><input type="image" src="../images/Tick.png" width="25" height="25" alt="YES"></td>
+                                        <td><button type="submit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i>
+                            </button></td>
                                     </tr>
                                     <?php } ?>
                                     </form>
@@ -337,7 +335,6 @@ if (empty($_SESSION["username"])){
                             </table>
                             <!-- /.table-responsive -->
                         </div>
-                        <!-- /.panel-body -->
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->

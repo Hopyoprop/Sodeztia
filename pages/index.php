@@ -51,6 +51,11 @@ if (empty($_SESSION["username"])){
     $sql = "SELECT COUNT(*) as 'Tasks' from completed_tasks";
     $result = mysqli_query($db,$sql);
     $row = mysqli_fetch_assoc($result);
+    
+    $sql2 = "SELECT COUNT(*) as 'Tasks' FROM completed_tasks WHERE honeylive='YES'";
+    $result2 = mysqli_query($db, $sql2);
+    $row2 = mysqli_fetch_assoc($result2);
+    
     $output = shell_exec("sudo ls /home/honeypots/");
     $honeypots = preg_split("#[\r\n]+#", $output);
     $noofhoney = sizeof($honeypots)-1;
@@ -297,14 +302,12 @@ if (empty($_SESSION["username"])){
                                     <i class="fa fa-server fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge"><?php
-                        echo (2);
-                                            ?></div>
-                                    <div>Servers Online!</div>
+                                    <div class="huge"><?php echo $row2['Tasks']; ?></div>
+                                    <div>Honeypots Online!</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="tasks.html">
+                        <a href="destroytask.php">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

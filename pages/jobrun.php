@@ -10,8 +10,9 @@ $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed
 $output="";
 //Run Vagrant and Ansible Commands here
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-/*
+
 exec("sudo cp -a /home/honeypots/$honeypot /home/$honeypot");
+chdir("/home/$honeypot/");/*
 exec("sudo vagrant up --provision 2>&1",$msg,$error);
 */
 if ($error==1){
