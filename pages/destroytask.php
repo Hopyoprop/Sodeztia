@@ -32,13 +32,6 @@ if (empty($_SESSION["username"])){
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
-     <!-- DataTables CSS -->
-    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
-
-    <!-- DataTables Responsive CSS -->
-    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
-
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -55,7 +48,7 @@ if (empty($_SESSION["username"])){
     define('DB_DATABASE', 'tasks');
     $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed to connect to MySQL: " . mysql_error()); 
     
-    $sql = "SELECT * FROM completed_tasks";
+    $sql = "SELECT * FROM completed_tasks WHERE honeylive='YES'";
     $result = mysqli_query($db, $sql);
 ?>
 <body>
@@ -289,14 +282,28 @@ if (empty($_SESSION["username"])){
           <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Completed Tasks</h1>
+                    <h1 class="page-header">Deploy Tasks</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->
+         <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
+                <?php if($_GET["task"]==1) : ?>
+                <div class="alert alert-success alert-dismissable fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="close">&times;</button>
+                    Honeypot is successfully destroyed.
+                </div>
+                <?php elseif($_GET["task"]==2) : ?>
+                <div class="alert alert-danger alert-dismissable fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="close">&times;</button>
+                    Task execution error. Please refer to logs.
+                </div>
+                <?php endif ?>
                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Destroy Honeypot
+                        </div>
                         <div class="panel-body">
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
@@ -307,39 +314,37 @@ if (empty($_SESSION["username"])){
                                         <th>Task Execution Datetime</th>
                                         <th>Playbook Deployed</th>
                                         <th>Comments</th>
+                                        <th>Destroy?</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                 <form role="form" action="honeydestroy.php" method="post">
                                      <?php
                                    while($row = mysqli_fetch_assoc($result)) {
                                     ?>
                                     <tr>
-                                        <td><?php echo $row['ID']; ?></td>
+                                        <td><?php echo $row['ID']; ?></td><input type="hidden" value="<?php echo $row['ID']; ?>" name="id">
                                         <td><?php echo $row['nameoftask']; ?></td>
                                         <td><?php echo $row['user']; ?></td>
                                         <td><?php echo $row['taskexecutedtime']; ?></td>
-                                        <td class="center"><?php echo $row['playbook_selected']; ?></td>
+                                        <td class="center"><?php echo $row['playbook_selected']; ?></td><input type="hidden" value="<?php echo $row['playbook_selected']; ?>" name="playbook">
                                         <td><?php echo $row['comments']; ?></td>
+                                        <td><input type="image" src="../images/Tick.png" width="25" height="25" alt="YES"></td>
                                     </tr>
                                     <?php } ?>
+                                    </form>
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
                         </div>
+                        <!-- /.panel-body -->
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->
-            <div class="row">
-                
-            <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
-
-    </div>
         
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
@@ -349,11 +354,6 @@ if (empty($_SESSION["username"])){
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-        
-    <!-- DataTables JavaScript -->
-    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
 
     <!-- Morris Charts JavaScript -->
     <script src="../vendor/raphael/raphael.min.js"></script>
@@ -363,13 +363,4 @@ if (empty($_SESSION["username"])){
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     </div><!-- Wrapper End -->
-    
-     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
-    });
-    </script>
 </body>

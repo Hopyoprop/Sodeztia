@@ -231,6 +231,9 @@ if (empty($_SESSION["username"])){
                                 <li>
                                     <a href="schedule.php"><i class="fa fa-clock-o fa-fw"></i> Execute Tasks</a>
                                 </li>
+                                <li>
+                                    <a href="destroytask.php"><i class="fa fa-times-circle-o fa-fw"></i> Shutdown Honeypot</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

@@ -32,23 +32,25 @@ session_start();
             $_SESSION["password"] = test_input($_POST["password"]);
             $valid++;
         }
+        $sql = "SELECT ID FROM users WHERE name = '$_SESSION[username]' and password = '$_SESSION[password]'";
+        $result = mysqli_query($db,$sql);
+        $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+        $count = mysqli_num_rows($result);    
+
+        if($count == 1 && $valid==2) {
+            $_SESSION["password"]="";
+            header('Location: index.php');
+        }else{
+            mysqli_close($db);
+            $_SESSION["authErr"] = "Your Login Name or Password is invalid";
+            header('Location: login.php');
+        }
     }
 
+    else {
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+}
 
-      $sql = "SELECT ID FROM users WHERE name = '$_SESSION[username]' and password = '$_SESSION[password]'";
-      $result = mysqli_query($db,$sql);
-      $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-
-     $count = mysqli_num_rows($result);    
-
-    if($count == 1 && $valid==2) {
-        $_SESSION["password"]="";
-        header('Location: index.php');
-      }else{
-         mysqli_close($db);
-         $_SESSION["authErr"] = "Your Login Name or Password is invalid";
-         header('Location: login.php');
-      }
 
     function test_input($data) {
         $data = trim($data);
