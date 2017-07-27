@@ -255,9 +255,6 @@ if (empty($_SESSION["username"])){
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="servers.php"><i class="fa fa-server fa-fw"></i> Server Management</a>
-                        </li>
-                        <li>
                             <a href="#"><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

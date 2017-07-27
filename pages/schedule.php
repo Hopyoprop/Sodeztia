@@ -238,7 +238,7 @@ if (empty($_SESSION["username"])){
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="servers.php"><i class="fa fa-server fa-fw"></i> Server Management</a>
+                             <a href="modify.php"><i class="fa fa-pencil-square-o fa-fw"></i>Edit Deployment Files</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
