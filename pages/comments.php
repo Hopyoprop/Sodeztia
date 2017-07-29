@@ -55,7 +55,7 @@ if (empty($_SESSION["username"])){
     define('DB_DATABASE', 'tasks');
     $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed to connect to MySQL: " . mysql_error()); 
     
-    $sql = "SELECT * FROM completed_tasks";
+    $sql = "SELECT * FROM comments";
     $result = mysqli_query($db, $sql);
 ?>
 <body>
@@ -238,7 +238,7 @@ if (empty($_SESSION["username"])){
                         <li>
                             <a href="index.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Tasks<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -253,7 +253,7 @@ if (empty($_SESSION["username"])){
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                         <li>
+                         <li class="active">
                          <a href="comments.php"><i class="fa fa fa-comments-o fa-fw"></i> Comments</a>
                         </li>
                         <!-- /.nav-third-level -->
@@ -266,7 +266,7 @@ if (empty($_SESSION["username"])){
           <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Completed Tasks</h1>
+                    <h1 class="page-header">Comments</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -275,15 +275,12 @@ if (empty($_SESSION["username"])){
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Task Name</th>
                                         <th>User</th>
-                                        <th>Task Execution Datetime</th>
-                                        <th>Playbook Deployed</th>
-                                        <th>Comments</th>
+                                        <th>Comment</th>
+                                        <th>Time Added</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -291,12 +288,9 @@ if (empty($_SESSION["username"])){
                                    while($row = mysqli_fetch_assoc($result)) {
                                     ?>
                                     <tr>
-                                        <td><?php echo $row['ID']; ?></td>
-                                        <td><?php echo $row['nameoftask']; ?></td>
-                                        <td><?php echo $row['user']; ?></td>
-                                        <td><?php echo $row['taskexecutedtime']; ?></td>
-                                        <td class="center"><?php echo $row['playbook_selected']; ?></td>
-                                        <td><?php echo $row['comments']; ?></td>
+                                        <td><?php echo $row['name']; ?></td>
+                                        <td><?php echo $row['comment']; ?></td>
+                                        <td><?php echo $row['timeadded']; ?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -319,7 +313,7 @@ if (empty($_SESSION["username"])){
     </div>
         
     <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/jquery/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -332,21 +326,16 @@ if (empty($_SESSION["username"])){
     <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
 
-    <!-- Morris Charts JavaScript -->
-    <script src="../vendor/raphael/raphael.min.js"></script>
-    <script src="../vendor/morrisjs/morris.min.js"></script>
-    <script src="../data/morris-data.js"></script>
-
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     </div><!-- Wrapper End -->
     
-     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
     $(document).ready(function() {
-        $('#dataTables-example').DataTable({
+        $('#dataTables').DataTable({
             responsive: true
         });
     });
-    </script>
+</script>
 </body>

@@ -40,7 +40,7 @@ $(document).ready(function() {
 
         var plotObj = $.plot($("#flot-line-chart"), [{
                 data: sin,
-                label: "sin(x)"
+                label: "Test"
             }, {
                 data: cos,
                 label: "cos(x)"

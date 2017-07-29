@@ -32,6 +32,7 @@ if (empty($_SESSION["username"])){
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -59,7 +60,50 @@ if (empty($_SESSION["username"])){
     $output = shell_exec("sudo ls /home/honeypots/");
     $honeypots = preg_split("#[\r\n]+#", $output);
     $noofhoney = sizeof($honeypots)-1;
-?>   
+    
+    $sql3="SELECT CONVERT(taskexecutedtime,DATE) as 'Dates', COUNT(CONVERT(taskexecutedtime,DATE)) as 'Count' FROM completed_tasks GROUP BY Dates";
+    $result3 = mysqli_query($db,$sql3);
+    $row3 = mysqli_fetch_all($result3,MYSQLI_NUM); 
+    
+    $sql4="SELECT name, TIMESTAMPDIFF(hour, timeadded, NOW()) as 'diff',comment from comments;";
+    $result4=mysqli_query($db,$sql4);
+    $row4=mysqli_fetch_all($result4,MYSQLI_NUM);
+
+?>  
+    <script type="text/javascript">
+window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Timeline of Executed Tasks"
+    },
+       animationEnabled: true,
+    axisX:{
+        title: "Timeline",
+        gridThickness: 2,
+        valueFormatString: "DD MMM"
+    },
+    axisY: {
+        title: "Tasks Executed"
+    },
+    data: [
+    {        
+        type: "spline",
+        dataPoints: [//array
+        <?php    
+    for ($i=0; $i<sizeof($row3); $i++){ 
+         $dateoutput = explode("-",$row3[$i][0]);
+            ?>
+        { x: new Date(<?php echo $dateoutput[0]?>,<?php echo $dateoutput[1]?>, <?php echo $dateoutput[2] ?>), y:<?php echo $row3[$i][1] ?>},
+<?php }?>
+        ]
+    }
+    ]
+});
+
+    chart.render();
+}
+</script>
 <body>
     <div id="wrapper">
 
@@ -255,28 +299,7 @@ if (empty($_SESSION["username"])){
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
+                         <a href="comments.php"><i class="fa fa fa-comments-o fa-fw"></i> Comments</a>
                         </li>
                     </ul>
                 </div>
@@ -290,7 +313,19 @@ if (empty($_SESSION["username"])){
                     <h1 class="page-header"><img src="../images/logo_big.png" width="150" height="130"> Dashboard</h1>
                 </div>
                 <!-- /.col-lg-12 -->
-            </div>
+            <div class="col-lg-12">
+              <?php if($_GET["task"]==1) : ?>
+                <div class="alert alert-success alert-dismissable fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="close">&times;</button>
+                    Comment successfully added.
+                </div>
+                <?php elseif($_GET["task"]==2) : ?>
+                <div class="alert alert-danger alert-dismissable fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="close">&times;</button>
+                    Comment adding failed. Please refer to logs.
+                </div>
+                <?php endif ?>
+              </div>
          <div class="col-lg-3 col-md-6">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -321,15 +356,19 @@ if (empty($_SESSION["username"])){
                                     <i class="fa fa-connectdevelop fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">Box</div>
-                                    <div>Systems Up</div>
+                                    <form role="form" action="commentadd.php" method="post">
+                                    <div class="form-group" style="margin-bottom:13px">
+                                    <input class="form-control" placeholder="Add a comment" value="" name="comment" style="height:20%">
+                                    </div>
+                                    <button type="submit" class="btn btn-default btn-block" style="height:20%">Submit</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a>
                             <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <span class="pull-left">View Below</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-down"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -344,14 +383,14 @@ if (empty($_SESSION["username"])){
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge"><?php echo $noofhoney ?></div>
-                                    <div>Honeypots Available for Deployment</div>
+                                    <div>Playbooks Available</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a>
                             <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <span class="pull-left">View Below</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-down"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -379,9 +418,94 @@ if (empty($_SESSION["username"])){
                         </a>
                     </div>
                 </div>
-              
-            Probably Add some charts or diagrams here for displaying the servers
+                </div>
+            <div class="row">
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6">
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Timeline of Events
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                        <div id="chartContainer" style="height: 350px ; width: 100%;">
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                </div>
+                 <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           Honeypots Available!
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="morris"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <div class="col-lg-12">
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa fa-bell-o fa-fw"></i> Recent Comments
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="timeline">
+                                <?php 
+                                for ($r=sizeof($row4)-1; $r>=0;$r--){
+                                        if ($r%2!=0){?>
+                                    <li class="timeline">
+                                        <div class="timeline-badge success"><i class="fa fa fa-exclamation"></i>
+                                        </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">Comment by: <?php echo $row4[$r][0] ?></h4>
+                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> <?php print $row4[$r][1] ?> hours ago</small>
+                                            </p>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p><?php echo $row4[$r][2]?></p>
+                                        </div>
+                                    </div>
+                                </li> 
+                                        <?php } else{?>
+                                
+                                <li class="timeline-inverted">
+                                        <div class="timeline-badge success"><i class="fa fa fa-exclamation"></i>
+                                        </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">Comment by: <?php echo $row4[$r][0] ?></h4>
+                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> <?php echo $row4[$r][1] ?> hours ago</small>
+                                            </p>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p><?php echo $row4[$r][2]?></p>
+                                        </div>
+                                    </div>
+                                </li> 
+                                
+                                
+                                <?php }    
+                                } ?>
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div> 
+            <!-- Row -->
         </div>
+        <!-- Page Wrapper -->
+    </div>
+    <!-- Wrapper End -->
+    
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 
@@ -394,9 +518,28 @@ if (empty($_SESSION["username"])){
     <!-- Morris Charts JavaScript -->
     <script src="../vendor/raphael/raphael.min.js"></script>
     <script src="../vendor/morrisjs/morris.min.js"></script>
-    <script src="../data/morris-data.js"></script>
+    
+    <!--Canvas JS MIN-->
+    <script src="../dist/js/canvasjs.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
-    </div><!-- Wrapper End -->
+        
+    <script>
+    Morris.Donut({
+    element: 'morris',
+    data: [
+        <?php
+             $output = shell_exec("sudo ls /home/honeypots/");
+             $honeypots = preg_split("#[\r\n]+#", $output);
+             for ($i=0;$i<sizeof($honeypots)-1;$i++){
+                                            ?>              
+        {label:"<?php echo strtoupper($honeypots[$i])?>", value: 1},
+         <?php
+           }
+         ?>
+    ]
+});    
+    </script>
 </body>
+</html>
