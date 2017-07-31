@@ -55,7 +55,7 @@ if (empty($_SESSION["username"])){
     define('DB_DATABASE', 'tasks');
     $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed to connect to MySQL: " . mysql_error()); 
     
-    $sql = "SELECT * FROM comments";
+    $sql = "SELECT * FROM comments ORDER BY timeadded desc";
     $result = mysqli_query($db, $sql);
 ?>
 <body>
@@ -334,7 +334,8 @@ if (empty($_SESSION["username"])){
     <script>
     $(document).ready(function() {
         $('#dataTables').DataTable({
-            responsive: true
+            responsive: true,
+            "order":[]
         });
     });
 </script>

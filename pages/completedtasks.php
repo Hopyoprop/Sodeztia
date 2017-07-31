@@ -55,7 +55,7 @@ if (empty($_SESSION["username"])){
     define('DB_DATABASE', 'tasks');
     $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed to connect to MySQL: " . mysql_error()); 
     
-    $sql = "SELECT * FROM completed_tasks";
+    $sql = "SELECT * FROM completed_tasks ORDER BY taskexecutedtime desc";
     $result = mysqli_query($db, $sql);
 ?>
 <body>
@@ -275,7 +275,7 @@ if (empty($_SESSION["username"])){
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -295,7 +295,7 @@ if (empty($_SESSION["username"])){
                                         <td><?php echo $row['nameoftask']; ?></td>
                                         <td><?php echo $row['user']; ?></td>
                                         <td><?php echo $row['taskexecutedtime']; ?></td>
-                                        <td class="center"><?php echo $row['playbook_selected']; ?></td>
+                                        <td><?php echo $row['playbook_selected']; ?></td>
                                         <td><?php echo $row['comments']; ?></td>
                                     </tr>
                                     <?php } ?>
@@ -332,11 +332,6 @@ if (empty($_SESSION["username"])){
     <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
 
-    <!-- Morris Charts JavaScript -->
-    <script src="../vendor/raphael/raphael.min.js"></script>
-    <script src="../vendor/morrisjs/morris.min.js"></script>
-    <script src="../data/morris-data.js"></script>
-
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     </div><!-- Wrapper End -->
@@ -344,8 +339,9 @@ if (empty($_SESSION["username"])){
      <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
     $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
+        $('#dataTables').DataTable({
+            responsive: true,
+            "order": []
         });
     });
     </script>
