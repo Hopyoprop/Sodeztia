@@ -45,8 +45,11 @@ $_SESSION["authErr"] = "";
 <body>
 
     <div class="container">
+        <div class="col-lg-12">
+           <img src="../images/logo_big.png" width="30%" style="display:block; margin-left:auto; margin-right:auto;">  
+        </div>
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
+         <div class="col-lg-12">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Please Sign In</h3>
@@ -86,6 +89,7 @@ $_SESSION["authErr"] = "";
             </div>
         </div>
     </div>
+    
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 
