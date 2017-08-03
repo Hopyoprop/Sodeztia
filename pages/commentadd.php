@@ -10,7 +10,6 @@ $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed
 $output="";
 //Run Vagrant and Ansible Commands here
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    
     //Else task if Running is Successful
     $sql = "INSERT INTO comments VALUES ('$_SESSION[username]','$_POST[comment]',NOW())";
     
@@ -22,6 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     mysqli_close($db);
 
 }else {
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    header("Location: $_SERVER['HTTP_REFERER']");
 }
 ?>

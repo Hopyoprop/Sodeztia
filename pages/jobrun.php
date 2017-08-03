@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login</title>
+    <title>Job Running</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 $honeypot = strtolower($_POST[playbook]);
 exec("sudo cp -a /home/honeypots/$honeypot /home/");
 chdir("/home/$honeypot/");
-exec("sudo vagrant up --provision 2>&1",$msg,$error);
+//exec("sudo vagrant up --provision 2>&1",$msg,$error);
     
 while (@ ob_end_flush()); // end all output buffers if any
 
@@ -68,16 +68,16 @@ while (!feof($proc))
     @ flush();
 }
 echo '</pre>';
-pclose($proc);
+$error = pclose($proc);
 
 if ($error==1){
-    chdir("/var/www/html/pages");
+    /*chdir("/var/www/html/pages");
     $file = fopen('../logs/errors.log','a+');
    
     for ($i=0;$i<sizeof($msg);$i++){
         fwrite($file,date("D M j H:i:s Y") . ' [:error] ' .$msg[$i].PHP_EOL);
     }
-    fclose($file);
+    fclose($file);*/
     echo '<META HTTP-EQUIV="Refresh" Content="0; URL=schedule.php?task=2">';
 }
 else {
@@ -87,7 +87,7 @@ else {
         $sql = "INSERT INTO completed_tasks (id,nameoftask, user, taskexecutedtime,playbook_selected,comments,honeylive) VALUES ($id,'$_POST[jobname]','$_SESSION[username]', NOW(),'$_POST[playbook]','$_POST[comments]','YES')";
     
         if (mysqli_query($db, $sql)) {
-            echo '<META HTTP-EQUIV="Refresh" Content="0; URL=schedule.php?task=1">';
+            
         } else {
             echo '<META HTTP-EQUIV="Refresh" Content="0; URL=schedule.php?task=2">';
         }
@@ -97,6 +97,7 @@ else {
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 ?>
+                        <a href="schedule.php?task=1"><button type="button" class="btn btn-default">Continue</button></a>
                         </div>
                         <!-- /.panel-body -->
                     </div>

@@ -40,7 +40,6 @@ if (empty($_SESSION["username"])){
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 <?php 
     define('DB_SERVER', 'localhost');
@@ -75,7 +74,7 @@ window.onload = function () {
     var chart = new CanvasJS.Chart("chartContainer",
     {
       title:{
-        text: "Timeline of Executed Tasks"
+        text: "Timeline of Last"
     },
        animationEnabled: true,
     axisX:{
@@ -90,12 +89,21 @@ window.onload = function () {
     {        
         type: "spline",
         dataPoints: [//array
-        <?php    
+        <?php 
+    if (sizeof($row3)<5){
     for ($i=0; $i<sizeof($row3); $i++){ 
          $dateoutput = explode("-",$row3[$i][0]);
             ?>
-        { x: new Date(<?php echo $dateoutput[0]?>,<?php echo $dateoutput[1]?>, <?php echo $dateoutput[2] ?>), y:<?php echo $row3[$i][1] ?>},
-<?php }?>
+        { x: new Date(<?php echo $dateoutput[0]?>,<?php echo $dateoutput[1]-1?>, <?php echo $dateoutput[2] ?>), y:<?php echo $row3[$i][1] ?>},
+<?php }}
+    else {
+     for ($i=0; $i<5; $i++){ 
+         $dateoutput = explode("-",$row3[$i][0]);
+            ?>
+        { x: new Date(<?php echo $dateoutput[0]?>,<?php echo $dateoutput[1]-1?>, <?php echo $dateoutput[2] ?>), y:<?php echo $row3[$i][1] ?>},
+<?php }   
+        
+    }?>
         ]
     }
     ]
@@ -106,7 +114,6 @@ window.onload = function () {
 </script>
 <body>
     <div id="wrapper">
-
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -438,7 +445,7 @@ window.onload = function () {
                  <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           Honeypots Available!
+                           Playbooks Available!
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
