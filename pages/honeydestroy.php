@@ -36,7 +36,7 @@
     <div id="wrapper">
         <!-- Navigation -->
                 <div class="col-lg-16">
-                    <h1 class="page-header">Deploying <?php echo $_POST['playbook'] ?></h1>
+                    <h1 class="page-header">Destryoing <?php echo $_POST['playbook'] ?></h1>
                 <!-- /.col-lg-12 -->
          <!-- /.row -->
                     <div class="panel panel-default">
@@ -50,14 +50,11 @@ define('DB_PASSWORD', '1qwer$#@!');
 define('DB_DATABASE', 'tasks');
 $db=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE) or die("Failed to connect to MySQL: " . mysql_error()); 
 
-$output="";
 //Run Vagrant and Ansible Commands here
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-$honeypot = strtolower($_POST[playbook]);
+$honeypot = strtolower($_POST['playbook']);
 chdir("/home/$honeypot/");
-//exec("sudo vagrant destroy -f 2>&1",$msg,$error);
 while (@ ob_end_flush()); // end all output buffers if any
-
 $proc = popen('sudo vagrant destroy -f', 'r');
 echo '<pre>';
 while (!feof($proc))
@@ -68,17 +65,10 @@ while (!feof($proc))
 echo '</pre>';
 $error = pclose($proc);
 exec("sudo rm -r -f /home/$honeypot/");
-    
 if ($error==1){
-    /*chdir("/var/www/html/pages");
-    $file = fopen('../logs/errors.log','a+');
-   
-    for ($i=0;$i<sizeof($msg);$i++){
-        fwrite($file,date("D M j H:i:s Y") . ' [:error] ' .$msg[$i].PHP_EOL);
-    }
-    fclose($file);*/
     echo '<META HTTP-EQUIV="Refresh" Content="0; URL=destroytask.php?task=2">';
 }
+
 else {
         //Else task if Running is Successful
         $sql = "UPDATE completed_tasks SET honeylive='NO' WHERE ID=$_POST[id]";
@@ -90,11 +80,12 @@ else {
         }
         mysqli_close($db);
 
-    }
+}
 }
 else {
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
+
 ?>
                         <a href="destroytask.php?task=1"><button type="button" class="btn btn-default">Continue</button></a>
                         </div>

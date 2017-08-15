@@ -60,7 +60,7 @@ if (empty($_SESSION["username"])){
     $honeypots = preg_split("#[\r\n]+#", $output);
     $noofhoney = sizeof($honeypots)-1;
     
-    $sql3="SELECT CONVERT(taskexecutedtime,DATE) as 'Dates', COUNT(CONVERT(taskexecutedtime,DATE)) as 'Count' FROM completed_tasks GROUP BY Dates";
+    $sql3="SELECT CONVERT(taskexecutedtime,DATE) as 'Dates', COUNT(CONVERT(taskexecutedtime,DATE)) as 'Count' FROM completed_tasks GROUP BY Dates DESC";
     $result3 = mysqli_query($db,$sql3);
     $row3 = mysqli_fetch_all($result3,MYSQLI_NUM); 
     
@@ -74,7 +74,7 @@ window.onload = function () {
     var chart = new CanvasJS.Chart("chartContainer",
     {
       title:{
-        text: "Timeline of Last"
+        text: "Last 5 days of Task Execution"
     },
        animationEnabled: true,
     axisX:{
@@ -91,7 +91,7 @@ window.onload = function () {
         dataPoints: [//array
         <?php 
     if (sizeof($row3)<5){
-    for ($i=0; $i<sizeof($row3); $i++){ 
+    for ($i=0; $i<sizeof($row3); $i++   ){ 
          $dateoutput = explode("-",$row3[$i][0]);
             ?>
         { x: new Date(<?php echo $dateoutput[0]?>,<?php echo $dateoutput[1]-1?>, <?php echo $dateoutput[2] ?>), y:<?php echo $row3[$i][1] ?>},

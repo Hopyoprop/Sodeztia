@@ -292,10 +292,10 @@ if (empty($_SESSION["username"])){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                 <form role="form" action="honeydestroy.php" method="post">
-                                     <?php
+                                      <?php
                                    while($row = mysqli_fetch_assoc($result)) {
                                     ?>
+                                    <form role="form" action="honeydestroy.php" method="post">
                                     <tr>
                                         <td><?php echo $row['ID']; ?></td><input type="hidden" value="<?php echo $row['ID']; ?>" name="id">
                                         <td><?php echo $row['nameoftask']; ?></td>
@@ -303,11 +303,10 @@ if (empty($_SESSION["username"])){
                                         <td><?php echo $row['taskexecutedtime']; ?></td>
                                         <td class="center"><?php echo $row['playbook_selected']; ?></td><input type="hidden" value="<?php echo $row['playbook_selected']; ?>" name="playbook">
                                         <td><?php echo $row['comments']; ?></td>
-                                        <td><button type="submit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i>
-                            </button></td>
+                                        <td><button type="submit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i></button></td>
                                     </tr>
-                                    <?php } ?>
                                     </form>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->

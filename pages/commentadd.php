@@ -21,6 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     mysqli_close($db);
 
 }else {
-    header("Location: $_SERVER['HTTP_REFERER']");
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 ?>
